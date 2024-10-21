@@ -1,2 +1,4 @@
 #Demo
-yum update -y && reboot!
+yum update -y && reboot
+htop
+nproc
