@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Take the IP address as the first input parameter
 TARGET_HOSTNAME=$1
 
