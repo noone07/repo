@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Jenkins string parameter - hostname of the server to SSH into
-TARGET_HOSTNAME=${TARGET_HOSTNAME}
+TARGET_HOSTNAME=${57.154.249.221}
 
 # SSH into the target server as root and run yum update
 if [ -z "$TARGET_HOSTNAME" ]; then
