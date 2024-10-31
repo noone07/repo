@@ -9,7 +9,7 @@ if [ -z "$TARGET_HOSTNAME" ]; then
 fi
 
 # SSH into the server and execute the command
-ssh -o StrictHostKeyChecking=no jenkins@"$TARGET_HOSTNAME" 'sudo yum update -y && reboot'
+ssh -o StrictHostKeyChecking=no jenkins@"$TARGET_HOSTNAME" 'sudo yum update -y'
 
 # Exit with the SSH command's exit code
 exit $?
