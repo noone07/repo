@@ -1,0 +1,20 @@
+---
+- name: Allow Jenkins user to restart Netdata and restart the service
+  hosts: all
+  become: yes
+  tasks:
+    - name: Grant jenkins user permissions to restart Netdata service
+      lineinfile:
+        path: /etc/sudoers
+        line: 'jenkins ALL=(ALL) NOPASSWD: /bin/systemctl restart netdata'
+        state: present
+      validate: 'visudo -cf %s'
+
+    - name: Restart Netdata service as Jenkins user
+      become_user: jenkins
+      command: sudo systemctl restart netdata
+      register: result
+
+    - name: Display result
+      debug:
+        var: result.stdout
