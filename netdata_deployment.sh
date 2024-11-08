@@ -10,7 +10,7 @@ CLAIM_URL="https://app.netdata.cloud"
 sudo -u jenkins wget -O /tmp/netdata-kickstart.sh "$NETDATA_SCRIPT_URL"
 
 # Run the script with the specified options as Jenkins user
-sudo -u jenkins bash /tmp/netdata-kickstart.sh --stable-channel \
+ssh -o StrictHostKeyChecking=no jenkins@"$TARGET_HOSTNAME"
   --claim-token "$CLAIM_TOKEN" \
   --claim-rooms "$CLAIM_ROOMS" \
   --claim-url "$CLAIM_URL"
