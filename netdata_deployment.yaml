@@ -1,0 +1,25 @@
+---
+- name: Deploy Netdata on any node
+  hosts: all  # or specify a particular group or host
+  become: yes
+
+  tasks:
+    - name: Download the Netdata kickstart script
+      ansible.builtin.get_url:
+        url: "https://get.netdata.cloud/kickstart.sh"
+        dest: "/tmp/netdata-kickstart.sh"
+        mode: '0755'
+
+    - name: Run the Netdata kickstart script
+      ansible.builtin.shell: |
+        sh /tmp/netdata-kickstart.sh --stable-channel \
+          --claim-token xDNhD-0jGfjqIs6lVnHytA9AykYdFqA9lpRgoDYu1Z2RF6fdCT4HPHQEgTQUlWcN-tBihrgLmPa-GNddsfy76a3SwXIrr3xHK1nSLA88Lw0LVhRt-jI0KjmtgPQ8HZ0wKima7Z8 \
+          --claim-rooms cc835736-4b90-44d0-acd0-ea15ec3a38c2 \
+          --claim-url https://app.netdata.cloud
+      args:
+        executable: /bin/bash
+      register: netdata_install
+
+    - name: Show the result of Netdata installation
+      debug:
+        var: netdata_install.stdout
