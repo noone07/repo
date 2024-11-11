@@ -1,0 +1,16 @@
+---
+- name: Create a local user named Bruce Lee with sudo privileges
+  hosts: all
+  become: true
+  tasks:
+    - name: Create a user named brucelee
+      ansible.builtin.user:
+        name: brucelee
+        comment: "Bruce Lee"
+        state: present
+
+    - name: Add brucelee to the sudoers
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/brucelee
+        content: "brucelee ALL=(ALL) NOPASSWD:ALL"
+        mode: '0440'
