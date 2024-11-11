@@ -1,6 +1,6 @@
 ---
 - name: Create a local user named Bruce Lee with sudo privileges
-  hosts: all
+  hosts: 57.154.249.221
   become: true
   tasks:
     - name: Create a user named brucelee
