@@ -11,5 +11,5 @@ fi
 
 # SSH into the server and execute the Ansible playbook
 ssh -o StrictHostKeyChecking=no jenkins@"$TARGET_HOSTNAME" << EOF
-  ansible-playbook /var/jenkins_home/.ssh/repo/ --connection=local
+  ansible-playbook /var/jenkins_home/.ssh/repo/User_creation.yml --connection=local
 EOF
