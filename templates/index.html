@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA Lotto Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>South African Lottery Generator</h1>
+    <div class="lotto-buttons">
+        <button onclick="generateLotto('lotto')">Generate Lotto</button>
+        <button onclick="generateLotto('powerball')">Generate PowerBall</button>
+        <button onclick="generateLotto('daily_lotto')">Generate Daily Lotto</button>
+        <button onclick="generateLotto('lotto_plus')">Generate Lotto Plus</button>
+    </div>
+
+    <div id="results" class="lotto-results">
+        <p class="loading">Click a button to generate results.</p>
+    </div>
+
+    <div id="history" class="lotto-history">
+        <h3>Previous Predictions</h3>
+        <ul id="history-list">
+            <!-- History will be populated dynamically -->
+        </ul>
+    </div>
+</div>
+
+<script>
+    function generateLotto(type) {
+        // Display loading message
+        document.getElementById("results").innerHTML = '<p class="loading">Generating numbers...</p>';
+
+        fetch(`/generate/${type}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    displayError(data.error);
+                } else {
+                    displayResults(data, type);
+                    saveHistory(data);
+                }
+            })
+            .catch(error => {
+                displayError("An error occurred while fetching data. Please try again.");
+            });
+    }
+
+    function displayResults(data, type) {
+        let resultHtml = `<h3>${data.lotto_type} Results (Projected for Tomorrow)</h3><ul>`;
+        if (type === 'powerball') {
+            resultHtml += `<li>PowerBall: ${data.numbers.powerball}</li>`;
+            resultHtml += '<li>Main Numbers:</li><ul>';
+            data.numbers.numbers.forEach(num => {
+                resultHtml += `<li>${num}</li>`;
+            });
+            resultHtml += '</ul>';
+        } else {
+            data.numbers.forEach(num => {
+                resultHtml += `<li>${num}</li>`;
+            });
+        }
+        resultHtml += `</ul><p class="lotto-info">Draw Date: ${data.projected_date}</p>`;
+        document.getElementById("results").innerHTML = resultHtml;
+    }
+
+    function displayError(message) {
+        document.getElementById("results").innerHTML = `<p class="error-message">${message}</p>`;
+    }
+
+    function saveHistory(data) {
+        const historyList = document.getElementById("history-list");
+        const listItem = document.createElement("li");
+        listItem.innerHTML = `<strong>${data.lotto_type}:</strong> ${data.numbers.join(', ')} (Projected for ${data.projected_date})`;
+        historyList.insertBefore(listItem, historyList.firstChild); // Add new history at the top
+    }
+</script>
+
+</body>
+</html>
+
