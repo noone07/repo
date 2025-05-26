@@ -1,5 +1,9 @@
 version: 0.2
 
+env:
+  variables:
+    ImageName: simple-docker-service
+
 phases:
   install:
     runtime-versions:
@@ -11,10 +15,10 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - cd repo                 # <--- add this line to go into /root/myapp/repo
-      - docker build -t $ImageName -f Dockerfile .
+      - docker build -t $ImageName .
   post_build:
     commands:
+      - echo Build completed on `date`
       - docker tag $ImageName:latest 963108901187.dkr.ecr.us-east-2.amazonaws.com/$ImageName:latest
       - docker push 963108901187.dkr.ecr.us-east-2.amazonaws.com/$ImageName:latest
 
